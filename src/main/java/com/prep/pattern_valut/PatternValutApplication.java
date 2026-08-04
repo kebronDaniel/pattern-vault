@@ -1,18 +1,19 @@
 package com.prep.pattern_valut;
 
-import com.prep.pattern_valut.behavioral.strategy.NotificationServiceConsumer;
-import com.prep.pattern_valut.behavioral.strategy.NotificationServiceRegistry;
-import org.springframework.boot.SpringApplication;
+import com.prep.pattern_valut.creational.factory.Document;
+import com.prep.pattern_valut.creational.factory.DocumentService;
+import com.prep.pattern_valut.creational.factory.DocumentStorageFactory;
+import com.prep.pattern_valut.creational.factory.StorageType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
 public class PatternValutApplication {
 
 	public static void main(String[] args) {
-		ApplicationContext context =  SpringApplication.run(PatternValutApplication.class, args);
-		NotificationServiceConsumer consumer = context.getBean(NotificationServiceConsumer.class);
-		consumer.doSomething();
+
+		DocumentService documentService = new DocumentService(new DocumentStorageFactory());
+		String result  = documentService.upload(StorageType.LOCAL,new Document("test-file",new byte[3]));
+		System.out.println(result);
 	}
 
 }

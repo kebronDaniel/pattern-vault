@@ -1,10 +1,10 @@
 package com.prep.pattern_valut;
 
-import com.prep.pattern_valut.behavioral.observer.*;
-import com.prep.pattern_valut.structural.adapter.QuickShipAdapter;
-import com.prep.pattern_valut.structural.adapter.QuickShipClient;
-import com.prep.pattern_valut.structural.adapter.Shipment;
-import com.prep.pattern_valut.structural.adapter.ShippingGateway;
+
+import com.prep.pattern_valut.structural.decorator.CompressorFileStorageDecorator;
+import com.prep.pattern_valut.structural.decorator.EncryptingFileStorageDecorator;
+import com.prep.pattern_valut.structural.decorator.FileStorage;
+import com.prep.pattern_valut.structural.decorator.LocalFileStorage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
@@ -13,11 +13,9 @@ import java.math.BigDecimal;
 public class PatternValutApplication {
 
 	public static void main(String[] args) {
-
-		ShippingGateway shippingGateway = new QuickShipAdapter(new QuickShipClient());
-		var result = shippingGateway.calculateQuote
-				(new Shipment("US","Germany", BigDecimal.valueOf(10)));
-		System.out.println(result);
+		FileStorage storage = new CompressorFileStorageDecorator(
+				new EncryptingFileStorageDecorator(new LocalFileStorage()));
+		storage.store("test.txt", new byte[3]);
 	}
 
 }

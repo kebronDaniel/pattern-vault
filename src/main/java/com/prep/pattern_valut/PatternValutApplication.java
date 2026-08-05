@@ -1,21 +1,21 @@
 package com.prep.pattern_valut;
 
 
-import com.prep.pattern_valut.structural.decorator.CompressorFileStorageDecorator;
-import com.prep.pattern_valut.structural.decorator.EncryptingFileStorageDecorator;
-import com.prep.pattern_valut.structural.decorator.FileStorage;
-import com.prep.pattern_valut.structural.decorator.LocalFileStorage;
+import com.prep.pattern_valut.structural.facade.TravelBookingFacade;
+import com.prep.pattern_valut.structural.facade.dto.User;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @SpringBootApplication
 public class PatternValutApplication {
 
 	public static void main(String[] args) {
-		FileStorage storage = new CompressorFileStorageDecorator(
-				new EncryptingFileStorageDecorator(new LocalFileStorage()));
-		storage.store("test.txt", new byte[3]);
+		TravelBookingFacade bookingFacade = new TravelBookingFacade(
+				new User("Leo", UUID.randomUUID(),"leo@gmail.com"));
+		var result = bookingFacade.bookTrip();
+		System.out.println(result);
 	}
 
 }

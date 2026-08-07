@@ -1,25 +1,30 @@
 package com.prep.pattern_valut;
 
 
-import com.prep.pattern_valut.structural.proxy.*;
-import com.prep.pattern_valut.structural.proxy.dto.BankAccount;
-import com.prep.pattern_valut.structural.proxy.dto.User;
+import com.prep.pattern_valut.behavioral.command.basicWithReturnType.*;
+import com.prep.pattern_valut.behavioral.command.basicWithReturnType.mail.MailService;
+import com.prep.pattern_valut.behavioral.command.basicWithReturnType.report.ReportGenerator;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.math.BigDecimal;
 
 @SpringBootApplication
 public class PatternValutApplication {
 
 	public static void main(String[] args) {
 
-		BankAccountRepository accountRepository = new BankAccountRepository();
-		accountRepository.save(new BankAccount("account-1", "user-1", new BigDecimal("100.00")));
-		BankAccountService bankAccountService = new SecuredBankAccountService(
-				accountRepository, new CoreBankAccountService(accountRepository));
-		User user = new User("user=1", Role.SUPPORT);
-		var result = bankAccountService.getAccount("account-1",user);
-		System.out.println(result.balance());
+		CommandQueue commandQueue = new CommandQueue();
+		MailService mailService = new MailService();
+		var mailRequest = new SendMailRequest
+				("joe@gmail.com", "mark@yahoo.com","Greetings");
+		Command command = new SendMailCommand(mailService,mailRequest);
+
+		ReportGenerator reportGenerator = new ReportGenerator();
+		ReportGeneratorCommand reportGeneratorCommand = new ReportGeneratorCommand<>(reportGenerator);
+		reportGeneratorCommand.addData("data1","value1");
+		reportGeneratorCommand.addData("data2","value2");
+		reportGeneratorCommand.addData("data3","value3");
+		commandQueue.submitCommand(command);
+		commandQueue.submitCommand(reportGeneratorCommand);
+		commandQueue.executeAll();
 	}
 
 }

@@ -9,11 +9,13 @@ public class LoggingFileStorageDecorator extends FileStorageDecorator {
     @Override
     public String store(String filename, byte[] content) {
         System.out.printf("Started logging the process ---- \n");
+        String result;
         try {
-            fileStorage.store(filename,content);
+            result = fileStorage.store(filename,content);
         } catch (RuntimeException exception){
-            throw new RuntimeException("Couldn't complete the process");
+            throw new RuntimeException("Couldn't complete the process", exception);
         }
-        return String.format("logs from file %s - \n", filename);
+        System.out.printf("logs from file %s - \n", filename);
+        return result;
     }
 }

@@ -4,9 +4,6 @@ import com.prep.pattern_vault.behavioral.template.dto.ReportData;
 import com.prep.pattern_vault.behavioral.template.dto.ReportRequest;
 import com.prep.pattern_vault.behavioral.template.dto.ReportResult;
 
-import java.time.Instant;
-import java.time.LocalDate;
-
 public abstract class ReportGenerator {
 
     private final ReportStorage reportStorage;
@@ -31,15 +28,15 @@ public abstract class ReportGenerator {
 
     private boolean validate(ReportRequest request){
         System.out.println("validating report");
-        return request.fromDate()!=request.toDate() && request.reportName() != null ? true : false;
+        return !request.fromDate().equals(request.toDate()) && request.reportName() != null;
     }
 
     private ReportData loadData(ReportRequest request){
-        return repository.load(LocalDate.now().minusDays(1), LocalDate.now());
+        return repository.load(request.fromDate(), request.toDate());
     }
 
     private String buildFileName(ReportRequest request) {
-        return request.reportName() + "." + fileExtension();
+        return request.reportName() + fileExtension();
     }
 
     protected abstract String fileExtension();

@@ -11,7 +11,7 @@ public class CsvReportGenerator extends ReportGenerator {
 
     @Override
     protected String fileExtension() {
-        return ".xlsx";
+        return ".csv";
     }
 
     @Override

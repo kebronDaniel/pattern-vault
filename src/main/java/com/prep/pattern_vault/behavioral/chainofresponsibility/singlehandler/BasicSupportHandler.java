@@ -1,0 +1,13 @@
+package com.prep.pattern_vault.behavioral.chainofresponsibility.singlehandler;
+
+public class BasicSupportHandler extends SupportHandler {
+    @Override
+    protected boolean canHandle(SupportTicket ticket) {
+        return ticket.severity().equals(Severity.LOW) ? true : false;
+    }
+
+    @Override
+    protected SupportResult resolve(SupportTicket ticket) {
+        return new SupportResult(ticket.id(),"Basic operations team","Basic error resolution");
+    }
+}

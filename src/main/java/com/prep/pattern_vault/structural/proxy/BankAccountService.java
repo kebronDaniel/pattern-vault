@@ -1,0 +1,12 @@
+package com.prep.pattern_vault.structural.proxy;
+
+import com.prep.pattern_vault.structural.proxy.dto.BankAccount;
+import com.prep.pattern_vault.structural.proxy.dto.User;
+
+import java.math.BigDecimal;
+
+public interface BankAccountService {
+    BankAccount getAccount(String accountId, User requester);
+    BankAccount deposit(String accountId, BigDecimal amount,User requester);
+    BankAccount withdraw(String accountId,BigDecimal amount,User requester);
+}

@@ -16,7 +16,7 @@ public class ConfigDbConnection {
     }
 
     public static synchronized ConfigDbConnection getInstance(){
-        if (configDbConnection == null) return new ConfigDbConnection();
+        if (configDbConnection == null) configDbConnection = new ConfigDbConnection();
         return configDbConnection;
     }
 

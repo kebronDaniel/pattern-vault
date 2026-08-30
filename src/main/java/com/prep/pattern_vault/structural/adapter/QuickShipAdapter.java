@@ -14,9 +14,9 @@ public class QuickShipAdapter implements ShippingGateway {
     public ShippingQuote calculateQuote(Shipment shipment) {
 
         String route = String.format("From %s to %s", shipment.originCountry(),shipment.destinationCountry());
-        int weightInKg = shipment.weightInKilograms().intValue();
-        QuickShipResponse response = quickShipClient.requestPrice(route,weightInKg);
+        int weightInGrams = shipment.weightInKilograms().multiply(BigDecimal.valueOf(1000)).intValue();
+        QuickShipResponse response = quickShipClient.requestPrice(route,weightInGrams);
 
-        return new ShippingQuote(BigDecimal.valueOf(response.priceInCents()/100), response.currencyCode(),response.deliveryDays());
+        return new ShippingQuote(BigDecimal.valueOf(response.priceInCents(), 2), response.currencyCode(),response.deliveryDays());
     }
 }

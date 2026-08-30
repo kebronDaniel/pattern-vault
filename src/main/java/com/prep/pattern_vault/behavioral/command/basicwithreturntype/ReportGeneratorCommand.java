@@ -2,7 +2,7 @@ package com.prep.pattern_vault.behavioral.command.basicwithreturntype;
 
 import com.prep.pattern_vault.behavioral.command.basicwithreturntype.report.ReportGenerator;
 
-public class ReportGeneratorCommand<R> implements Command<String> {
+public class ReportGeneratorCommand implements Command<String> {
 
     private final ReportGenerator reportGenerator;
 

@@ -2,7 +2,7 @@ package com.prep.pattern_vault.behavioral.command.basicwithreturntype;
 
 import com.prep.pattern_vault.behavioral.command.basicwithreturntype.mail.MailService;
 
-public class SendMailCommand<R> implements Command<String> {
+public class SendMailCommand implements Command<String> {
 
     private final MailService mailService;
     private final SendMailRequest request;

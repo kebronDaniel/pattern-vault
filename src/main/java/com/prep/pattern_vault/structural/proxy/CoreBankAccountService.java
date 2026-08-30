@@ -29,7 +29,7 @@ public class CoreBankAccountService implements BankAccountService {
     @Override
     public BankAccount withdraw(String accountId, BigDecimal amount, User requester) {
         BankAccount account = accountRepository.findById(accountId);
-        if (amount.compareTo(account.balance()) > -1){
+        if (amount.compareTo(account.balance()) > 0){
             throw new IllegalStateException("Can not withdraw such amount");
         }
         var newBalance = account.balance().subtract(amount);

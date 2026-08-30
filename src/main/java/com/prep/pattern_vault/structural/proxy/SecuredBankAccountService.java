@@ -19,7 +19,7 @@ public class SecuredBankAccountService implements BankAccountService {
     public BankAccount getAccount(String accountId, User requester) {
         BankAccount account = bankAccountRepository.findById(accountId);
         System.out.printf("Verifying the account number - %s \n", account.accountId());
-        if (requester.role().equals(Role.SUPPORT)) throw new AccessDeniedException(requester.id());
+        checkAccess(account, requester);
         return bankAccountService.getAccount(accountId,requester);
     }
 
@@ -27,7 +27,7 @@ public class SecuredBankAccountService implements BankAccountService {
     public BankAccount deposit(String accountId, BigDecimal amount, User requester) {
         BankAccount account = bankAccountRepository.findById(accountId);
         System.out.printf("Verify privileges of owner-id - %s \n", account.ownerId());
-        if (requester.role().equals(Role.SUPPORT)) throw new AccessDeniedException(requester.id());
+        checkAccess(account, requester);
         return bankAccountService.deposit(accountId,amount,requester);
     }
 
@@ -35,7 +35,14 @@ public class SecuredBankAccountService implements BankAccountService {
     public BankAccount withdraw(String accountId, BigDecimal amount, User requester) {
         BankAccount account = bankAccountRepository.findById(accountId);
         System.out.printf("Verify the owner of id - %s",account.ownerId());
-        if (requester.role().equals(Role.SUPPORT)) throw new AccessDeniedException(requester.id());
+        checkAccess(account, requester);
         return bankAccountService.withdraw(accountId,amount,requester);
+    }
+
+    private void checkAccess(BankAccount account, User requester) {
+        if (requester.role().equals(Role.SUPPORT)) throw new AccessDeniedException(requester.id());
+        if (requester.role().equals(Role.CUSTOMER) && !requester.id().equals(account.ownerId())) {
+            throw new AccessDeniedException(requester.id());
+        }
     }
 }

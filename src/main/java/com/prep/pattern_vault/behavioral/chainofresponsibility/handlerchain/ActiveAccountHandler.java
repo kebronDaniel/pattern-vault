@@ -3,7 +3,7 @@ package com.prep.pattern_vault.behavioral.chainofresponsibility.handlerchain;
 public class ActiveAccountHandler extends PaymentSupportHandler {
     @Override
     boolean canHandle(PaymentRequest request) {
-        return request.requestId() != null ? true : false;
+        return request.accountActive();
     }
 
     @Override

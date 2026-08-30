@@ -15,14 +15,12 @@ public class StoppedAudioState implements AudioState {
 
     @Override
     public void pressRewindButton(AudioPlayer audioPlayer) {
-        audioPlayer.setAudioState(new RewindAudioState());
-        audioPlayer.rewindMusic();
+        System.out.println("Nothing is playing to rewind");
     }
 
     @Override
     public void pressFastForwardButton(AudioPlayer audioPlayer) {
-        audioPlayer.setAudioState(new FastforwardAudioState());
-        audioPlayer.fastForwardMusic();
+        System.out.println("Nothing is playing to fast forward");
     }
 
     @Override

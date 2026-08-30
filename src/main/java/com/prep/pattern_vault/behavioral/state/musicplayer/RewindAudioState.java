@@ -20,8 +20,8 @@ public class RewindAudioState implements AudioState {
 
     @Override
     public void pressFastForwardButton(AudioPlayer audioPlayer) {
-        audioPlayer.setAudioState(new PlayAudioState());
-        audioPlayer.playMusic();
+        audioPlayer.setAudioState(new FastforwardAudioState());
+        audioPlayer.fastForwardMusic();
     }
 
     @Override

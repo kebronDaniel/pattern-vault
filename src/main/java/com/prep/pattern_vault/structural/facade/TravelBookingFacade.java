@@ -6,10 +6,6 @@ import com.prep.pattern_vault.structural.facade.service.NotificationService;
 import com.prep.pattern_vault.structural.facade.service.PaymentService;
 import com.prep.pattern_vault.structural.facade.dto.*;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class TravelBookingFacade {
@@ -18,27 +14,32 @@ public class TravelBookingFacade {
     private final HotelService hotelService;
     private final NotificationService notificationService;
     private final PaymentService paymentService;
-    private final User user;
 
-
-    public TravelBookingFacade(User user) {
+    public TravelBookingFacade() {
         this.flightService = new FlightService();
         this.hotelService = new HotelService();
         this.notificationService = new NotificationService();
         this.paymentService = new PaymentService();
-        this.user = user;
     }
 
-    public TravelBookingResult bookTrip(){
+    public TravelBookingResult bookTrip(TravelBookingRequest request){
 
-        FlightReservation flightReservation = flightService.reserve("US", "UK", LocalDate.now(), LocalDate.now().plusDays(5));
-        HotelReservation hotelReservation = hotelService.reserve("UK", LocalDate.now().plusDays(1)
-                ,LocalDate.now().plusDays(5));
-        PaymentResult paymentResult = paymentService.charge(user.id().toString(), BigDecimal.valueOf(3000));
+        FlightReservation flightReservation = flightService.reserve(request.origin(), request.destination()
+                ,request.departureDate(), request.returnDate());
+        HotelReservation hotelReservation = hotelService.reserve(request.destination(), request.departureDate()
+                ,request.returnDate());
+        PaymentResult paymentResult = paymentService.charge(request.customerId(), request.totalPrice());
+
+        if (!paymentResult.result()) {
+            flightService.cancel(flightReservation.id());
+            hotelService.cancel(hotelReservation.id());
+            throw new BookingFailedException("Payment failed for customer " + request.customerId());
+        }
+
         UUID bookingId = UUID.randomUUID();
         TravelBookingResult result = new TravelBookingResult(bookingId.toString(),flightReservation.id()
                 ,hotelReservation.id(),paymentResult.id());
-        notificationService.sendConfirmation(user.email(),result);
+        notificationService.sendConfirmation(request.email(),result);
         return result;
     }
 }

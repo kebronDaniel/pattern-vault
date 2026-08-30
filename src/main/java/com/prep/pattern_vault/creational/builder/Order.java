@@ -76,7 +76,7 @@ public class Order {
 
         public Builder(String customerId, List<OrderItem> items, Address shippingAddress, BigDecimal totalAmount) {
             this.customerId = customerId;
-            this.items = items;
+            this.items = List.copyOf(items);
             this.shippingAddress = shippingAddress;
             this.totalAmount = totalAmount;
         }

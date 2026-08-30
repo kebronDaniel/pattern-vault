@@ -20,9 +20,11 @@ public class AppendTextCommand implements UndoableCommand {
 
     @Override
     public void undo() {
-        textEditor.removeLast(text.length());
-        this.executed = false;
-        this.text = null;
+        if (executed){
+            textEditor.removeLast(text.length());
+            this.executed = false;
+            this.text = null;
+        }
     }
 
     public String getText() {

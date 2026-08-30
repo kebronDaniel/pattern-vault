@@ -17,7 +17,7 @@ public class PatternVaultApplication {
 
 		var resource = ResourceProvision.GET_RESOURCE;
 		var resource2 = ResourceProvision.GET_RESOURCE;
-		System.out.println(resource2.getInstanceCounter());
+		System.out.println(resource == resource2);
 	}
 
 }

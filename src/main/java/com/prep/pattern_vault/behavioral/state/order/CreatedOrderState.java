@@ -24,7 +24,7 @@ public class CreatedOrderState extends OrderState {
 
     @Override
     public void refund(Order order) {
-        order.setCurrentState(new RefundOrderState());
+        stateException(this.name(), OrderStage.REFUNDED.name());
     }
 
     @Override

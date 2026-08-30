@@ -28,6 +28,6 @@ public class RefundOrderState extends OrderState {
 
     @Override
     String name() {
-        return OrderStage.CANCELED.name();
+        return OrderStage.REFUNDED.name();
     }
 }

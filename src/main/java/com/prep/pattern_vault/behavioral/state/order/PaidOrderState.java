@@ -24,7 +24,7 @@ public class PaidOrderState extends OrderState {
 
     @Override
     public void refund(Order order) {
-        order.setCurrentState(new CancelledOrderState());
+        order.setCurrentState(new RefundOrderState());
     }
 
     @Override
